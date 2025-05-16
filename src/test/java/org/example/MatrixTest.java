@@ -2,6 +2,8 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 class MatrixTest{
     @Test
@@ -39,5 +41,19 @@ class MatrixTest{
     void test_matrixConstructorNoParameters(){
         Matrix matrix = new Matrix();
         System.out.println(matrix.getMatrix());
+    }
+
+    @Test
+    void test_multiplyMatrices(){
+        try{
+            Matrix matrix = new Matrix("""
+                    2;3
+                    1;4
+                    """);
+            ArrayList<ArrayList<Integer>> matrixSquared = Matrix.multiplyMatrices(matrix.getMatrix(),matrix.getMatrix());
+            System.out.println(matrixSquared);
+        } catch(MatrixException e){
+            System.out.println(e.getMessage());
+        }
     }
 }

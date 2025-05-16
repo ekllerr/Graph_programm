@@ -33,7 +33,7 @@ public class Matrix {
                 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;0;1
                 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0
                 """;
-        this.matrix = this.csvToArr(csvMatrix);
+        this.setMatrix(this.csvToArr(csvMatrix));
     }
 
     public Matrix(String csv) throws MatrixException {
@@ -56,6 +56,69 @@ public class Matrix {
 
 
         return matrix;
+    }
+
+    public ArrayList<ArrayList<Integer>> getDistanceMatrix(){
+        ArrayList<ArrayList<Integer>> distanceMatrix = new ArrayList<>();
+
+        final int maxValue = Integer.MAX_VALUE;
+
+        for(int i = 0; i < this.matrix.size(); i++){
+            ArrayList<Integer> row = new ArrayList<>();
+            for(int j = 0; j < this.matrix.get(i).size(); j++){
+                if(i == j){
+                    row.add(0);
+                    continue;
+                }
+
+                if(j == 0){
+                    row.add(maxValue);
+                    continue;
+                }
+
+                //TODO
+
+            }
+            distanceMatrix.add(row);
+        }
+
+        return distanceMatrix;
+    }
+
+
+    public ArrayList<ArrayList<Integer>> adjMatrixToPower(int k){
+        ArrayList<ArrayList<Integer>> newMatrix = new ArrayList<>();
+
+        //TODO
+
+        return newMatrix;
+    }
+
+    static public ArrayList<ArrayList<Integer>> multiplyMatrices (ArrayList<ArrayList<Integer>> matrix1, ArrayList<ArrayList<Integer>> matrix2) throws MatrixException{
+        ArrayList<ArrayList<Integer>> newMatrix = new ArrayList<>();
+
+        if((matrix1 == null || matrix1.isEmpty()) || (matrix2 == null || matrix2.isEmpty())) throw new MatrixException("Keine Matrix übergeben");
+        if(matrix1.size() != matrix2.size()) throw new MatrixException("Matrixen können nicht multipliziert werden");
+
+
+        for(int i = 0; i < matrix1.size(); i++){
+            if((matrix1.get(i).size() != matrix1.size()) || (matrix2.get(i).size() != matrix1.size())) throw new MatrixException("Beide Matrizen müssen quadratisch sein");
+        }
+
+        
+        for(int i = 0; i < matrix1.size(); i++){
+            ArrayList<Integer> row = new ArrayList<>();
+            for(int j = 0; j < matrix1.get(i).size(); j++){
+                int sum = 0;
+                for(int k = 0; k < matrix2.get(i).size(); k++){
+                    sum += matrix1.get(i).get(k)*matrix2.get(k).get(j);
+                }
+                row.add(sum);
+            }
+            newMatrix.add(row);
+        }
+
+        return newMatrix;
     }
 
     public ArrayList<ArrayList<Integer>> getMatrix() {
