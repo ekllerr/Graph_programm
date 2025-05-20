@@ -33,8 +33,6 @@ class MatrixTest{
                 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1
                 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;0;1
                 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0""";
-//        Matrix matrix = new Matrix(csv);
-//        System.out.println(matrix.getMatrix());
     }
 
     @Test
@@ -52,6 +50,17 @@ class MatrixTest{
                     """);
             ArrayList<ArrayList<Integer>> matrixSquared = Matrix.multiplyMatrices(matrix.getMatrix(),matrix.getMatrix());
             System.out.println(matrixSquared);
+        } catch(MatrixException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_adjMatrixToPower(){
+        try{
+            Matrix matrix = new Matrix("""
+                    
+                    """);
         } catch(MatrixException e){
             System.out.println(e.getMessage());
         }

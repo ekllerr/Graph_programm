@@ -86,16 +86,46 @@ public class Matrix {
     }
 
 
-    public ArrayList<ArrayList<Integer>> adjMatrixToPower(int k){
-        ArrayList<ArrayList<Integer>> newMatrix = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> adjMatrixToPower(int k)throws MatrixException{
 
-        //TODO
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
 
-        return newMatrix;
+        if(k<0) throw new MatrixException("Die Potenz darf nicht negativ sein");
+
+        if(k==0){
+            for(int i = 0; i < this.matrix.size(); i++){
+                ArrayList<Integer> row = new ArrayList<>();
+                for(int j = 0; j < this.matrix.get(i).size(); j++){
+                    if(i == j){
+                        row.add(1);
+                        continue;
+                    }
+                    row.add(0);
+                }
+                result.add(row);
+            }
+            return result;
+        }
+
+        for(int i = 0; i < this.matrix.size(); i++){
+            ArrayList<Integer> row = new ArrayList<>(this.matrix.get(i));
+            result.add(row);
+        }
+
+        if(k==1){
+            return result;
+        }
+
+
+        for(int i = 1; i < k;i++ ){
+            result = Matrix.multiplyMatrices(result, this.matrix);
+        }
+
+        return result;
     }
 
     static public ArrayList<ArrayList<Integer>> multiplyMatrices (ArrayList<ArrayList<Integer>> matrix1, ArrayList<ArrayList<Integer>> matrix2) throws MatrixException{
-        ArrayList<ArrayList<Integer>> newMatrix = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
 
         if((matrix1 == null || matrix1.isEmpty()) || (matrix2 == null || matrix2.isEmpty())) throw new MatrixException("Keine Matrix übergeben");
         if(matrix1.size() != matrix2.size()) throw new MatrixException("Matrixen können nicht multipliziert werden");
@@ -115,10 +145,10 @@ public class Matrix {
                 }
                 row.add(sum);
             }
-            newMatrix.add(row);
+            result.add(row);
         }
 
-        return newMatrix;
+        return result;
     }
 
     public ArrayList<ArrayList<Integer>> getMatrix() {
