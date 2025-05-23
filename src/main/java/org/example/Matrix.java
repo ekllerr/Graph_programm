@@ -1,5 +1,7 @@
 package org.example;
 
+import com.sun.source.tree.ArrayAccessTree;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -71,31 +73,40 @@ public class Matrix {
                     continue;
                 }
 
-                if(j == 0){
-                    row.add(maxValue);
-                    continue;
+                if(this.matrix.get(i).get(j) == 1){
+                    row.add(1);
                 }
 
-                //TODO
+                if(this.matrix.get(i).get(j) == 0){
+                    row.add(maxValue);
+                }
 
             }
             distanceMatrix.add(row);
         }
 
+        for(int k = 1; k < this.matrix.getFirst().size(); k++){
+
+        }
+
         return distanceMatrix;
     }
 
-
-    public ArrayList<ArrayList<Integer>> adjMatrixToPower(int k)throws MatrixException{
-
+    static public ArrayList<ArrayList<Integer>> matrixToPower(ArrayList<ArrayList<Integer>> matrix, int k) throws MatrixException{
         ArrayList<ArrayList<Integer>> result = new ArrayList<>();
 
-        if(k<0) throw new MatrixException("Die Potenz darf nicht negativ sein");
+        if(matrix == null || matrix.isEmpty()) throw new MatrixException("Keine Matrix übergeben");
+
+        for(int i = 0; i < matrix.size(); i++){
+            if(matrix.size() != matrix.get(i).size())throw new MatrixException("Die Matrix muss quadratisch sein");
+        }
+
+        if(k < 0) throw new MatrixException("Die Potenz darf nicht negativ sein");
 
         if(k==0){
-            for(int i = 0; i < this.matrix.size(); i++){
+            for(int i = 0; i < matrix.size(); i++){
                 ArrayList<Integer> row = new ArrayList<>();
-                for(int j = 0; j < this.matrix.get(i).size(); j++){
+                for(int j = 0; j < matrix.get(i).size(); j++){
                     if(i == j){
                         row.add(1);
                         continue;
@@ -107,8 +118,8 @@ public class Matrix {
             return result;
         }
 
-        for(int i = 0; i < this.matrix.size(); i++){
-            ArrayList<Integer> row = new ArrayList<>(this.matrix.get(i));
+        for(int i = 0; i < matrix.size(); i++){
+            ArrayList<Integer> row = new ArrayList<>(matrix.get(i));
             result.add(row);
         }
 
@@ -116,12 +127,17 @@ public class Matrix {
             return result;
         }
 
-
-        for(int i = 1; i < k;i++ ){
-            result = Matrix.multiplyMatrices(result, this.matrix);
+        for(int i = 1; i < k; i++){
+            result = Matrix.multiplyMatrices(matrix, result);
         }
 
+
         return result;
+    }
+
+
+    public ArrayList<ArrayList<Integer>> adjMatrixToPower(int k)throws MatrixException{
+        return Matrix.matrixToPower(this.getMatrix(), k);
     }
 
     static public ArrayList<ArrayList<Integer>> multiplyMatrices (ArrayList<ArrayList<Integer>> matrix1, ArrayList<ArrayList<Integer>> matrix2) throws MatrixException{
