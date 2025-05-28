@@ -2,6 +2,9 @@ package org.example;
 
 import com.sun.source.tree.ArrayAccessTree;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -60,34 +63,97 @@ public class Matrix {
         return matrix;
     }
 
-    public ArrayList<ArrayList<Integer>> getDistanceMatrix(){
+    public ArrayList<ArrayList<Integer>> getDistanceMatrix() throws MatrixException, IOException {
+
         ArrayList<ArrayList<Integer>> distanceMatrix = new ArrayList<>();
 
-        final int maxValue = Integer.MAX_VALUE;
+        BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt", true));
 
+        writer.newLine();
+        writer.write("------------------------ NEW LOGS ------------------");
+        writer.newLine();
+
+        final int maxValue = Integer.MAX_VALUE;
+        writer.write("Start of creating distance Matrix from adj Matrix");
         for(int i = 0; i < this.matrix.size(); i++){
             ArrayList<Integer> row = new ArrayList<>();
-            for(int j = 0; j < this.matrix.get(i).size(); j++){
+            for(int j = 0; j < this.matrix.size(); j++){
+            writer.write(String.format("Current i,j: %d,%d\n", i, j));
                 if(i == j){
                     row.add(0);
+                    writer.write(String.format("i is equal to j, so row gets 0, row: %s\n", row));
                     continue;
                 }
 
-                if(this.matrix.get(i).get(j) == 1){
-                    row.add(1);
+                if(this.matrix.get(i).get(j) != 0){
+                    row.add(this.matrix.get(i).get(j));
+                    writer.write(String.format("Value of adj Matrix at position i,j(%d,%d) is not equal to 0, so row gets 1, row: %s\n", i, j, row));
+                    continue;
                 }
 
                 if(this.matrix.get(i).get(j) == 0){
                     row.add(maxValue);
+                    writer.write(String.format("Value of adf Matrix at position i,j(%d,%d) is equal to 0, so row gets maxValue ,row: %s\n", i, j, row));
+                    continue;
                 }
+
+                writer.write(String.format("NO STATEMENT WAS COMPLETED, ROW: %s", row));
 
             }
             distanceMatrix.add(row);
         }
 
-        for(int k = 1; k < this.matrix.getFirst().size(); k++){
+        writer.write(String.format("CREATING OF BASIC DISTANCE MATRIX IS FINISHED, MATRIX: %s\n", distanceMatrix));
+        writer.flush();
 
+        ArrayList<ArrayList<Integer>> poweredMatrix;
+        writer.write("START OF POWERING DISTANCE MATRIX");
+        for(int k = 1; k < distanceMatrix.size(); k++){
+            poweredMatrix = Matrix.matrixToPower(this.matrix, k);
+            boolean hasChanged = false;
+
+            writer.write(String.format("Current k: %d, poweredMatrix: %s", k, poweredMatrix));
+            writer.newLine();
+
+            for(int i = 0; i < distanceMatrix.size(); i++){
+
+                if (poweredMatrix.get(i).size() != poweredMatrix.size()) {
+                    writer.write(String.format("Row %d size mismatch! Expected: %d, Actual: %d",i, poweredMatrix.size(), poweredMatrix.get(i).size()));
+                    writer.newLine();
+                }
+
+                for(int j = 0; j < distanceMatrix.get(i).size(); j++){
+
+                    writer.write(String.format("Current i,j: %d,%d", i,j));
+                    writer.newLine();
+
+                    if(distanceMatrix.get(i).get(j) == maxValue){
+                        if(poweredMatrix.get(i).get(j) != 0){
+                            distanceMatrix.get(i).set(j, k);
+
+                            writer.write(String.format("Distance Matrix: %s", distanceMatrix));
+                            writer.newLine();
+                            writer.write(String.format("Powered Matrix: %s",poweredMatrix));
+                            writer.newLine();
+
+                            hasChanged = true;
+
+                        } else {
+                            writer.write(String.format("Powered Matrix in %d,%d position does not have 0", i, j));
+                            writer.newLine();
+                        }
+
+                    }else {
+                        writer.write("Distance Matrix has no max values");
+                        writer.newLine();
+                    }
+                }
+            }
+            if(!hasChanged) break;
         }
+
+        writer.flush();
+        writer.close();
 
         return distanceMatrix;
     }

@@ -2,6 +2,9 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -108,12 +111,18 @@ class MatrixTest{
                     0;1;0;0;0
             """);
 
+            Matrix matrix2 = new Matrix("""
+                    0;1
+                    1;0
+                    """);
+
             ArrayList<ArrayList<Integer>> distanceMatrix = matrix.getDistanceMatrix();
             System.out.println("Adj Matrix: " + matrix.getMatrix());
             System.out.println("Distance Matrix: " + distanceMatrix);
 
-        } catch(MatrixException e){
+        } catch(MatrixException | IOException e){
             System.out.println(e.getMessage());
         }
     }
+
 }
