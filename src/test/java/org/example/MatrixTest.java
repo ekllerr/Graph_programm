@@ -2,6 +2,7 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -97,6 +98,26 @@ class MatrixTest{
     }
 
     @Test
+    void test_getDistanceMatrix_copyingAdjMatrix_shouldWorkCorrectly(){
+        try{
+            Matrix matrix = new Matrix("""
+                    0;1;1;1;0
+                    1;0;0;1;1
+                    1;0;0;1;0
+                    1;1;1;0;0
+                    0;1;0;0;0
+                    """);
+
+            ArrayList<ArrayList<Integer>> newMatrix = matrix.getDistanceMatrix();
+
+            assertEquals(newMatrix,matrix.getDistanceMatrix());
+
+        } catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
     void test_getDistanceMatrix(){
         try {
 
@@ -112,7 +133,7 @@ class MatrixTest{
             System.out.println("Adj Matrix: " + matrix.getMatrix());
             System.out.println("Distance Matrix: " + distanceMatrix);
 
-        } catch(MatrixException e){
+        } catch(MatrixException | IOException e){
             System.out.println(e.getMessage());
         }
     }

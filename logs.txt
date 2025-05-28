@@ -1,0 +1,9 @@
+---START OF COPYING ADJ MATRIX--
+Adj Matrix: 
+[[0, 1, 1, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 0, 0]]Copied Matrix: 
+[[0, 1, 1, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 0, 0]]
+--END OF COPYING ADJ MATRIX-----START OF COPYING ADJ MATRIX--
+Adj Matrix: 
+[[0, 1, 1, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 0, 0]]Copied Matrix: 
+[[0, 1, 1, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 0, 0]]
+--END OF COPYING ADJ MATRIX--

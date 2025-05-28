@@ -2,6 +2,9 @@ package org.example;
 
 import com.sun.source.tree.ArrayAccessTree;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -60,34 +63,34 @@ public class Matrix {
         return matrix;
     }
 
-    public ArrayList<ArrayList<Integer>> getDistanceMatrix(){
-        ArrayList<ArrayList<Integer>> distanceMatrix = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> getDistanceMatrix() throws IOException {
 
         final int maxValue = Integer.MAX_VALUE;
 
+        ArrayList<ArrayList<Integer>> distanceMatrix = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> poweredMatrix = new ArrayList<>();
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt",true));
+        writer.write("---START OF COPYING ADJ MATRIX--");
+        writer.newLine();
+        writer.write("Adj Matrix: ");
+        writer.newLine();
+        writer.write(String.valueOf(this.matrix));
+
         for(int i = 0; i < this.matrix.size(); i++){
-            ArrayList<Integer> row = new ArrayList<>();
-            for(int j = 0; j < this.matrix.get(i).size(); j++){
-                if(i == j){
-                    row.add(0);
-                    continue;
-                }
-
-                if(this.matrix.get(i).get(j) == 1){
-                    row.add(1);
-                }
-
-                if(this.matrix.get(i).get(j) == 0){
-                    row.add(maxValue);
-                }
-
-            }
-            distanceMatrix.add(row);
+            ArrayList<Integer> row = new ArrayList<>(this.matrix.get(i));
+            poweredMatrix.add(row);
         }
 
-        for(int k = 1; k < this.matrix.getFirst().size(); k++){
+        writer.write("Copied Matrix: ");
+        writer.newLine();
+        writer.write(String.valueOf(poweredMatrix));
+        writer.newLine();
+        writer.write("--END OF COPYING ADJ MATRIX--");
 
-        }
+        writer.flush();
+        writer.close();
+
 
         return distanceMatrix;
     }
