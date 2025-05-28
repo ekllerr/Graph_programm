@@ -5,6 +5,7 @@ import com.sun.source.tree.ArrayAccessTree;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -63,97 +64,119 @@ public class Matrix {
         return matrix;
     }
 
-    public ArrayList<ArrayList<Integer>> getDistanceMatrix() throws MatrixException, IOException {
-
-        ArrayList<ArrayList<Integer>> distanceMatrix = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> getDistanceMatrix() throws IOException, MatrixException {
 
         BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt", true));
 
+        ArrayList<ArrayList<Integer>> distanceMatrix = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> poweredMatrix = new ArrayList<>();
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt",true));
         writer.newLine();
-        writer.write("------------------------ NEW LOGS ------------------");
+        writer.write("====== NEW LOGS ======");
+        writer.newLine();
+        writer.write("---START OF COPYING ADJ MATRIX--");
+        writer.newLine();
+        writer.write("Adj Matrix: ");
+        writer.newLine();
+        writer.write(String.valueOf(this.matrix));
+
+        for(int i = 0; i < this.matrix.size(); i++){
+            ArrayList<Integer> row = new ArrayList<>(this.matrix.get(i));
+            adjMatrix.add(row);
+        }
+
+        writer.write("Copied Matrix: ");
+        writer.newLine();
+        writer.write(String.valueOf(adjMatrix));
+        writer.newLine();
+        writer.write("--END OF COPYING ADJ MATRIX--");
         writer.newLine();
 
-        final int maxValue = Integer.MAX_VALUE;
-        writer.write("Start of creating distance Matrix from adj Matrix");
-        for(int i = 0; i < this.matrix.size(); i++){
+        writer.flush();
+
+        writer.write("-- START OF CREATING THE DISTANCE MATRIX OF THE 1st POWER --");
+        writer.newLine();
+
+        for(int i = 0; i < adjMatrix.size(); i++){
+
             ArrayList<Integer> row = new ArrayList<>();
-            for(int j = 0; j < this.matrix.size(); j++){
-            writer.write(String.format("Current i,j: %d,%d\n", i, j));
+
+            for(int j = 0; j < adjMatrix.get(i).size(); j++){
+
                 if(i == j){
                     row.add(0);
-                    writer.write(String.format("i is equal to j, so row gets 0, row: %s\n", row));
-                    continue;
                 }
-
-                if(this.matrix.get(i).get(j) != 0){
-                    row.add(this.matrix.get(i).get(j));
-                    writer.write(String.format("Value of adj Matrix at position i,j(%d,%d) is not equal to 0, so row gets 1, row: %s\n", i, j, row));
-                    continue;
-                }
-
-                if(this.matrix.get(i).get(j) == 0){
+                else if(adjMatrix.get(i).get(j) == 0){
                     row.add(maxValue);
-                    writer.write(String.format("Value of adf Matrix at position i,j(%d,%d) is equal to 0, so row gets maxValue ,row: %s\n", i, j, row));
-                    continue;
+                }else{
+                    row.add(1);
                 }
-
-                writer.write(String.format("NO STATEMENT WAS COMPLETED, ROW: %s", row));
 
             }
+
             distanceMatrix.add(row);
         }
 
-        writer.write(String.format("CREATING OF BASIC DISTANCE MATRIX IS FINISHED, MATRIX: %s\n", distanceMatrix));
+        writer.write("Created Distance Matrix: ");
+        writer.newLine();
+        writer.write(String.valueOf(distanceMatrix));
+        writer.newLine();
+        writer.write("Crated from adj Matrix: ");
+        writer.newLine();
+        writer.write(String.valueOf(adjMatrix));
+        writer.newLine();
+
+        writer.write("-- END OF CREATING THE DISTANCE MATRIX OF THE 1st POWER --");
+
         writer.flush();
 
-        ArrayList<ArrayList<Integer>> poweredMatrix;
-        writer.write("START OF POWERING DISTANCE MATRIX");
-        for(int k = 1; k < distanceMatrix.size(); k++){
-            poweredMatrix = Matrix.matrixToPower(this.matrix, k);
-            boolean hasChanged = false;
+        writer.write("-- START OF POWERING THE DISTANCE MATRIX --");
+        writer.newLine();
 
-            writer.write(String.format("Current k: %d, poweredMatrix: %s", k, poweredMatrix));
+        for(int k = 2; k < adjMatrix.size(); k++){
+            boolean hasChanged = false;
+            poweredMatrix = Matrix.matrixToPower(adjMatrix,k);
+
+            writer.write(String.format("k = %d, powered Matrix: ", k));
+            writer.newLine();
+            writer.write(String.valueOf(poweredMatrix));
+            writer.newLine();
+            writer.write("Powered from adj Matrix: ");
+            writer.newLine();
+            writer.write(String.valueOf(adjMatrix));
             writer.newLine();
 
-            for(int i = 0; i < distanceMatrix.size(); i++){
+            for(int i = 0; i < adjMatrix.size(); i++){
 
-                if (poweredMatrix.get(i).size() != poweredMatrix.size()) {
-                    writer.write(String.format("Row %d size mismatch! Expected: %d, Actual: %d",i, poweredMatrix.size(), poweredMatrix.get(i).size()));
-                    writer.newLine();
-                }
+                for(int j = 0; j < adjMatrix.get(i).size(); j++){
 
-                for(int j = 0; j < distanceMatrix.get(i).size(); j++){
+                    if(distanceMatrix.get(i).get(j) == maxValue && poweredMatrix.get(i).get(j) > 0){
 
-                    writer.write(String.format("Current i,j: %d,%d", i,j));
-                    writer.newLine();
-
-                    if(distanceMatrix.get(i).get(j) == maxValue){
-                        if(poweredMatrix.get(i).get(j) != 0){
-                            distanceMatrix.get(i).set(j, k);
-
-                            writer.write(String.format("Distance Matrix: %s", distanceMatrix));
-                            writer.newLine();
-                            writer.write(String.format("Powered Matrix: %s",poweredMatrix));
-                            writer.newLine();
-
-                            hasChanged = true;
-
-                        } else {
-                            writer.write(String.format("Powered Matrix in %d,%d position does not have 0", i, j));
-                            writer.newLine();
-                        }
-
-                    }else {
-                        writer.write("Distance Matrix has no max values");
-                        writer.newLine();
+                        distanceMatrix.get(i).set(j, k);
+                        hasChanged = true;
                     }
                 }
             }
+
             if(!hasChanged) break;
         }
 
+        writer.write("Powered Distance Matrix: ");
+        writer.newLine();
+        writer.write(String.valueOf(distanceMatrix));
+        writer.newLine();
+        writer.write("Created from adj Matrix: ");
+        writer.newLine();
+        writer.write(String.valueOf(adjMatrix));
+        writer.newLine();
+        writer.write("-- END OF POWERING THE DISTANCE MATRIX --");
+        writer.newLine();
+
         writer.flush();
         writer.close();
+
 
         return distanceMatrix;
     }
