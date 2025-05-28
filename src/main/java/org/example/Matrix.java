@@ -68,11 +68,12 @@ public class Matrix {
 
         BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt", true));
 
+        int maxValue = Integer.MAX_VALUE;
+
         ArrayList<ArrayList<Integer>> distanceMatrix = new ArrayList<>();
         ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<>();
         ArrayList<ArrayList<Integer>> poweredMatrix = new ArrayList<>();
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt",true));
         writer.newLine();
         writer.write("====== NEW LOGS ======");
         writer.newLine();
