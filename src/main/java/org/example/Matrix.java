@@ -5,6 +5,7 @@ import com.sun.source.tree.ArrayAccessTree;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -71,6 +72,9 @@ public class Matrix {
         ArrayList<ArrayList<Integer>> poweredMatrix = new ArrayList<>();
 
         BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt",true));
+        writer.newLine();
+        writer.write("====== NEW LOGS ======");
+        writer.newLine();
         writer.write("---START OF COPYING ADJ MATRIX--");
         writer.newLine();
         writer.write("Adj Matrix: ");
@@ -87,6 +91,43 @@ public class Matrix {
         writer.write(String.valueOf(poweredMatrix));
         writer.newLine();
         writer.write("--END OF COPYING ADJ MATRIX--");
+        writer.newLine();
+
+        writer.flush();
+
+        writer.write("-- START OF CREATING THE DISTANCE MATRIX OF THE 1st POWER --");
+        writer.newLine();
+
+        for(int i = 0; i < poweredMatrix.size(); i++){
+
+            ArrayList<Integer> row = new ArrayList<>();
+
+            for(int j = 0; j < poweredMatrix.get(i).size(); j++){
+
+                if(i == j){
+                    row.add(0);
+                }
+                else if(poweredMatrix.get(i).get(j) == 0){
+                    row.add(maxValue);
+                }else{
+                    row.add(1);
+                }
+
+            }
+
+            distanceMatrix.add(row);
+        }
+
+        writer.write("Created Distance Matrix: ");
+        writer.newLine();
+        writer.write(String.valueOf(distanceMatrix));
+        writer.newLine();
+        writer.write("Crated from adj Matrix: ");
+        writer.newLine();
+        writer.write(String.valueOf(poweredMatrix));
+        writer.newLine();
+
+        writer.write("-- END OF CREATING THE DISTANCE MATRIX OF THE 1st POWER --");
 
         writer.flush();
         writer.close();

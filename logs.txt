@@ -1,9 +1,13 @@
+
+====== NEW LOGS ======
 ---START OF COPYING ADJ MATRIX--
 Adj Matrix: 
 [[0, 1, 1, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 0, 0]]Copied Matrix: 
 [[0, 1, 1, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 0, 0]]
---END OF COPYING ADJ MATRIX-----START OF COPYING ADJ MATRIX--
-Adj Matrix: 
-[[0, 1, 1, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 0, 0]]Copied Matrix: 
-[[0, 1, 1, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 0, 0]]
 --END OF COPYING ADJ MATRIX--
+-- START OF CREATING THE DISTANCE MATRIX OF THE 1st POWER --
+Created Distance Matrix: 
+[[0, 1, 1, 1, 2147483647], [1, 0, 2147483647, 1, 1], [1, 2147483647, 0, 1, 2147483647], [1, 1, 1, 0, 2147483647], [2147483647, 1, 2147483647, 2147483647, 0]]
+Crated from adj Matrix: 
+[[0, 1, 1, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 0, 0]]
+-- END OF CREATING THE DISTANCE MATRIX OF THE 1st POWER --
