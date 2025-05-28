@@ -98,26 +98,6 @@ class MatrixTest{
     }
 
     @Test
-    void test_getDistanceMatrix_of_firstPower(){
-        try{
-            Matrix matrix = new Matrix("""
-                    0;1;1;1;0
-                    1;0;0;1;1
-                    1;0;0;1;0
-                    1;1;1;0;0
-                    0;1;0;0;0
-                    """);
-
-            ArrayList<ArrayList<Integer>> newMatrix = matrix.getDistanceMatrix();
-
-            System.out.println("Adj Matrix: " + matrix.getMatrix());
-            System.out.println("Distance Matrix of 1st power: " + newMatrix);
-        } catch(MatrixException | IOException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-    @Test
     void test_getDistanceMatrix(){
         try {
 
