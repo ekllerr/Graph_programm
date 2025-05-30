@@ -124,7 +124,7 @@ public class Matrix {
         writer.newLine();
         writer.write(String.valueOf(distanceMatrix));
         writer.newLine();
-        writer.write("Crated from adj Matrix: ");
+        writer.write("Created from adj Matrix: ");
         writer.newLine();
         writer.write(String.valueOf(adjMatrix));
         writer.newLine();
@@ -257,8 +257,12 @@ public class Matrix {
         return result;
     }
 
-    public ArrayList<ArrayList<Integer>> getMatrix() {
+    public ArrayList<ArrayList<Integer>> getMatrix(){
         return matrix;
+    }
+
+    public void setMatrix(String matrix){
+        this.matrix = this.csvToArr(matrix);
     }
 
     public void setMatrix(ArrayList<ArrayList<Integer>> matrix) {
