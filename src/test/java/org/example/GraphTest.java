@@ -175,4 +175,25 @@ class GraphTest {
             System.out.println(e.getMessage());
         }
     }
+
+    @Test
+    void test_getCenter(){
+        try{
+
+            Graph graph = new Graph("""
+                0;1;0;0
+                1;0;1;0
+                0;1;0;1
+                0;0;1;0
+              """);
+
+            String result = graph.findEccentricities();
+            System.out.println(result);
+            System.out.println("Center(s): " + graph.getCenterNodes());
+
+        } catch(MatrixException | IOException | GraphException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

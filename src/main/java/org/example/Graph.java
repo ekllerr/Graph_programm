@@ -74,6 +74,20 @@ public class Graph {
         return Collections.max(eccentricities);
     }
 
+    public ArrayList<GraphNode> getCenterNodes() throws GraphException{
+        int minValue = this.getRadius();
+
+        ArrayList<GraphNode> centerNodes = new ArrayList<>();
+
+        for(GraphNode node : this.nodes){
+            if(node.getEccentricity() == minValue){
+                centerNodes.add(node);
+            }
+        }
+
+        return centerNodes;
+    }
+
 
     private void initializeNodes(){
         this.nodes.clear();
