@@ -52,6 +52,29 @@ public class Graph {
         return sb.toString();
     }
 
+    public int getRadius() throws GraphException{
+        ArrayList<Integer> eccentricities = this.getEccentricities();
+        if(!eccentricities.contains(-1)){
+            return Collections.min(eccentricities);
+        }
+
+        int radius = Integer.MAX_VALUE;
+
+        for(int i = 0; i < eccentricities.size(); i++){
+            if(eccentricities.get(i) != -1 && eccentricities.get(i) < radius){
+                radius = eccentricities.get(i);
+            }
+        }
+        if(radius == Integer.MAX_VALUE) throw new GraphException("Graph ist nicht zusammenhängend");
+        return radius;
+    }
+
+    public int getDiameter(){
+        ArrayList<Integer> eccentricities = this.getEccentricities();
+        return Collections.max(eccentricities);
+    }
+
+
     private void initializeNodes(){
         this.nodes.clear();
 
@@ -81,6 +104,14 @@ public class Graph {
     public void setMatrix(Matrix matrix) {
         if(matrix == null) throw new GraphException("Matrix ist null");
         this.matrix = matrix;
+    }
+
+    public ArrayList<Integer> getEccentricities(){
+        ArrayList<Integer> eccentricities = new ArrayList<>();
+        for(GraphNode node : this.nodes){
+            eccentricities.add(node.getEccentricity());
+        }
+        return eccentricities;
     }
 
     @Override

@@ -73,6 +73,7 @@ class GraphTest {
             System.out.println(e.getMessage());
         }
     }
+
     @Test
     void test_findEccentricities_starGraph(){
         try{
@@ -92,6 +93,7 @@ class GraphTest {
             System.out.println(e.getMessage());
         }
     }
+
     @Test
     void test_findEccentricities_twoSeparateComponents(){
         try{
@@ -111,6 +113,7 @@ class GraphTest {
             System.out.println(e.getMessage());
         }
     }
+
     @Test
     void test_findEccentricities_lShapedGraph(){
         try{
@@ -125,6 +128,48 @@ class GraphTest {
             String result = graph.findEccentricities();
             System.out.println(result);
             System.out.println(graph);
+
+        } catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_getRadius(){
+        try{
+
+            Graph graph = new Graph("""
+                0;0
+                0;0
+              """);
+
+            String result = graph.findEccentricities();
+            System.out.println(result);
+            try{
+                System.out.println("Radius: " + graph.getRadius());
+            } catch(GraphException e){
+                System.out.println(e.getMessage());
+            }
+
+        } catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_getDiameter(){
+        try{
+
+            Graph graph = new Graph("""
+                0;1;0;0
+                1;0;1;0
+                0;1;0;1
+                0;0;1;0
+              """);
+
+            String result = graph.findEccentricities();
+            System.out.println(result);
+            System.out.println("Diameter: " + graph.getDiameter());
 
         } catch(MatrixException | IOException e){
             System.out.println(e.getMessage());
