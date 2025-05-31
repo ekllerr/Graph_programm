@@ -1,0 +1,133 @@
+package org.example;
+
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
+
+class GraphTest {
+    @Test
+    void test_initializeNodes(){
+        Graph graph = new Graph();
+        System.out.println(graph.toString());
+    }
+
+    @Test
+    void test_findEccentricities_completeGraph(){
+        try{
+
+            Graph graph = new Graph("""
+                0;1;1;1
+                1;0;1;1
+                1;1;0;1
+                1;1;1;0
+               """);
+
+            String result = graph.findEccentricities();
+
+            System.out.println(result);
+            System.out.println(graph.toString());
+
+        } catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_findEccentricities_linearChainOf_4_Nodes(){
+        try{
+
+            Graph graph = new Graph("""
+                0;1;0;0
+                1;0;1;0
+                0;1;0;1
+                0;0;1;0
+               """);
+
+            String result = graph.findEccentricities();
+
+            System.out.println(result);
+            System.out.println(graph.toString());
+
+        } catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_findEccentricities_disconnectedGraph(){
+        try{
+
+            Graph graph = new Graph("""
+                0;0;0
+                0;0;0
+                0;0;0
+               """);
+
+            String result = graph.findEccentricities();
+            System.out.println(graph.getMatrix().getDistanceMatrix());
+            System.out.println(result);
+            System.out.println(graph);
+
+        } catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    @Test
+    void test_findEccentricities_starGraph(){
+        try{
+
+            Graph graph = new Graph("""
+                0;1;1;1
+                1;0;0;0
+                1;0;0;0
+                1;0;0;0
+               """);
+
+            String result = graph.findEccentricities();
+            System.out.println(result);
+            System.out.println(graph);
+
+        } catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    @Test
+    void test_findEccentricities_twoSeparateComponents(){
+        try{
+
+            Graph graph = new Graph("""
+                0;1;0;0
+                1;0;0;0
+                0;0;0;1
+                0;0;1;0
+              """);
+
+            String result = graph.findEccentricities();
+            System.out.println(result);
+            System.out.println(graph);
+
+        } catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    @Test
+    void test_findEccentricities_lShapedGraph(){
+        try{
+
+            Graph graph = new Graph("""
+                0;1;0;0
+                1;0;1;0
+                0;1;0;1
+                0;0;1;0
+              """);
+
+            String result = graph.findEccentricities();
+            System.out.println(result);
+            System.out.println(graph);
+
+        } catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+}

@@ -5,9 +5,8 @@ import com.sun.source.tree.ArrayAccessTree;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 public class Matrix {
     private ArrayList<ArrayList<Integer>> matrix;
@@ -82,6 +81,7 @@ public class Matrix {
         writer.write("Adj Matrix: ");
         writer.newLine();
         writer.write(String.valueOf(this.matrix));
+        writer.newLine();
 
         for(int i = 0; i < this.matrix.size(); i++){
             ArrayList<Integer> row = new ArrayList<>(this.matrix.get(i));
@@ -234,7 +234,7 @@ public class Matrix {
         ArrayList<ArrayList<Integer>> result = new ArrayList<>();
 
         if((matrix1 == null || matrix1.isEmpty()) || (matrix2 == null || matrix2.isEmpty())) throw new MatrixException("Keine Matrix übergeben");
-        if(matrix1.size() != matrix2.size()) throw new MatrixException("Matrixen können nicht multipliziert werden");
+        if(matrix1.size() != matrix2.size()) throw new MatrixException("Matrizen können nicht multipliziert werden");
 
 
         for(int i = 0; i < matrix1.size(); i++){
@@ -267,5 +267,36 @@ public class Matrix {
 
     public void setMatrix(ArrayList<ArrayList<Integer>> matrix) {
         this.matrix = matrix;
+    }
+
+    public String matrixToString(ArrayList<ArrayList<Integer>> matrix){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < matrix.size(); i++){
+            StringBuilder row = new StringBuilder();
+            for(int j = 0; j < matrix.get(i).size(); j++){
+                row.append(matrix.get(i).get(j).toString());
+                if(j != matrix.get(i).size() - 1) row.append(";");
+            }
+            sb.append(row);
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Adjazenzmatrix Matrix: \n");
+        sb.append(matrixToString(this.matrix));
+        try{
+            ArrayList<ArrayList<Integer>> distanceMatrix = this.getDistanceMatrix();
+            sb.append("\nDistanz Matrix: \n");
+            sb.append(this.matrixToString(distanceMatrix));
+        } catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+
+
+        return sb.toString();
     }
 }

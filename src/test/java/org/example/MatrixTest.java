@@ -37,6 +37,22 @@ class MatrixTest{
     }
 
     @Test
+    void test_toString(){
+        try{
+
+            Matrix matrix = new Matrix("""
+                    0;1;1
+                    1;0;0
+                    1;0;0
+                    """);
+            System.out.println(matrix.toString());
+
+        } catch (MatrixException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
     void test_matrixConstructorNoParameters(){
         Matrix matrix = new Matrix();
         System.out.println(matrix.getMatrix());

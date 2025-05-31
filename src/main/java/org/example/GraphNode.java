@@ -48,4 +48,14 @@ public class GraphNode {
     public void setLabel(String label) {
         this.label = label;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Knote: ").append(id);
+        if(!this.label.isBlank()) sb.append(", ").append(label);
+        if(this.eccentricity == -1) sb.append(", Exzentrizitäten noch nicht berechnet");
+        else sb.append(", Exzentrizitäten: ").append(eccentricity);
+        return sb.toString();
+    }
 }
