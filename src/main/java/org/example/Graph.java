@@ -7,17 +7,22 @@ import java.util.Collections;
 public class Graph {
     private Matrix matrix;
     private ArrayList<GraphNode> nodes;
+    private ArrayList<ArrayList<Integer>> adjList;
 
     public Graph(){
         this.setMatrix(new Matrix());
         this.nodes = new ArrayList<>();
+        this.adjList = new ArrayList<>();
         this.initializeNodes();
+        this.initializeAdjList();
     }
 
     public Graph(String matrix) throws MatrixException {
         this.setMatrix(new Matrix(matrix));
         this.nodes = new ArrayList<>();
+        this.adjList = new ArrayList<>();
         this.initializeNodes();
+        this.initializeAdjList();
     }
 
     public String findEccentricities() throws MatrixException, IOException {
@@ -88,6 +93,19 @@ public class Graph {
         return centerNodes;
     }
 
+    private void initializeAdjList(){
+        for(int i = 0; i < this.matrix.getMatrix().size(); i++){
+            ArrayList<Integer> neighbors = new ArrayList<>();
+
+            for(int j = 0; j < this.matrix.getMatrix().get(i).size(); j++){
+                if(this.matrix.getMatrix().get(i).get(j) > 0) {
+                    neighbors.add(j + 1);
+                }
+            }
+
+            adjList.add(neighbors);
+        }
+    }
 
     private void initializeNodes(){
         this.nodes.clear();
@@ -98,9 +116,12 @@ public class Graph {
         }
     }
 
+    public ArrayList<ArrayList<Integer>> getAdjList(){
+        return this.adjList;
+    }
 
     public Matrix getMatrix() {
-        return matrix;
+        return this.matrix;
     }
 
     public ArrayList<GraphNode> getNodes(){

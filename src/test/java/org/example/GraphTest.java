@@ -196,4 +196,20 @@ class GraphTest {
         }
     }
 
+    @Test
+    void test_initializeAdjList(){
+        try{
+
+            Graph graph = new Graph("""
+                    0;1;1;1
+                    1;0;0;0
+                    1;0;0;0
+                    1;0;0;0
+                    """);
+            System.out.println(graph.getAdjList());
+        }catch(MatrixException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 }
