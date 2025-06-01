@@ -1,8 +1,7 @@
 package org.example;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class Graph {
     private Matrix matrix;
@@ -55,6 +54,35 @@ public class Graph {
         }
 
         return sb.toString();
+    }
+
+    public Stack<GraphNode> dfs(int nodeId){
+        if(nodeId > this.nodes.size()) throw new GraphException("Keine Knote mit id " + nodeId);
+        Stack<GraphNode> stack = new Stack<>();
+        Stack<GraphNode> result = new Stack<>();
+        Set<GraphNode> visited = new HashSet<>();
+
+        for(GraphNode node : this.nodes){
+            if(node.getId() == nodeId){
+                stack.push(node);
+            }
+        }
+
+        while(!stack.isEmpty() && visited.size() < this.nodes.size()){
+            GraphNode node = stack.pop();
+
+            if(!visited.contains(node)){
+                visited.add(node);
+                result.add(node);
+
+                for(int i = 0; i < this.adjList.get(node.getId()-1).size(); i++){
+                    GraphNode u = this.nodes.get(this.adjList.get(node.getId()-1).get(i) - 1);
+                    stack.push(u);
+                }
+            }
+        }
+
+        return result;
     }
 
     public int getRadius() throws GraphException{

@@ -212,4 +212,70 @@ class GraphTest {
         }
     }
 
+    @Test
+    void test_dfs_simpleConnected_Graph(){
+        try{
+
+            Graph graph = new Graph("""
+                    0;1;1
+                    1;0;1
+                    1;1;0
+                    """);
+            System.out.println(graph.dfs(1));
+        } catch(MatrixException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_dfs_disconnectedGraph(){
+        try{
+
+            Graph graph = new Graph("""
+                    0;1;0;0
+                    1;0;0;0
+                    0;0;0;1
+                    0;0;1;0
+                    """);
+            System.out.println(graph.dfs(1));
+            System.out.println(graph.dfs(3));
+        } catch(MatrixException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_dfs_noSuchNodeId(){
+        try{
+
+            Graph graph = new Graph("""
+                    0;1;0;0
+                    1;0;0;0
+                    0;0;0;1
+                    0;0;1;0
+                    """);
+            System.out.println(graph.dfs(5));
+        } catch(MatrixException | GraphException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_dfs_starGraph(){
+        try{
+
+            Graph graph = new Graph("""
+                    0;1;1;1
+                    1;0;0;0
+                    1;0;0;0
+                    1;0;0;0
+                    """);
+            System.out.println(graph.dfs(1));
+        } catch(MatrixException | GraphException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
 }
