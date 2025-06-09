@@ -399,4 +399,72 @@ class GraphTest {
         }
     }
 
+    @Test
+    void test_articulations_starGraph() {
+        try{
+            Graph graph = new Graph("""
+                        0;1;1;1
+                        1;0;0;0
+                        1;0;0;0
+                        1;0;0;0
+                    """);
+
+            System.out.println(graph.getArticulations());
+        } catch(MatrixException | GraphException e){
+            System.out.println();
+        }
+    }
+
+    @Test
+    void test_articulations_chainGraph() {
+        try {
+            Graph graph = new Graph("""
+                        0;1;0;0;0
+                        1;0;1;0;0
+                        0;1;0;1;0
+                        0;0;1;0;1
+                        0;0;0;1;0
+                    """);
+
+            System.out.println(graph.getArticulations());
+        } catch (MatrixException | GraphException e) {
+            System.out.println();
+        }
+    }
+
+    @Test
+    void test_articulations_circleGraph() {
+        try{
+            Graph graph = new Graph("""
+                        0;1;0;0;1
+                        1;0;1;0;0
+                        0;1;0;1;0
+                        0;0;1;0;1
+                        1;0;0;1;0
+                    """);
+
+            System.out.println(graph.getArticulations());
+        } catch(MatrixException | GraphException e){
+            System.out.println();
+        }
+    }
+
+    @Test
+    void test_articulations_disconnectedGraph() {
+        try{
+            Graph graph = new Graph("""
+                        0;1;0;0;0;0
+                        1;0;1;0;0;0
+                        0;1;0;0;0;0
+                        0;0;0;0;1;1
+                        0;0;0;1;0;0
+                        0;0;0;1;0;0
+                    """);
+
+            System.out.println(graph.getArticulations());
+        } catch(MatrixException | GraphException e){
+            System.out.println();
+        }
+    }
+
 }

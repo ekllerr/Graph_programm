@@ -8,15 +8,19 @@ public class Graph {
     private ArrayList<GraphNode> nodes;
     private ArrayList<ArrayList<Integer>> adjList;
     private ArrayList<ArrayList<GraphNode>> components;
+    private ArrayList<GraphNode> articulations;
 
     public Graph() {
         this.setMatrix(new Matrix());
         this.nodes = new ArrayList<>();
         this.adjList = new ArrayList<>();
         this.components = new ArrayList<>();
+        this.articulations = new ArrayList<>();
+
         this.initializeNodes();
         this.initializeAdjList();
         this.findComponents();
+        this.findArticulations();
     }
 
     public Graph(String matrix) throws MatrixException {
@@ -24,9 +28,12 @@ public class Graph {
         this.nodes = new ArrayList<>();
         this.adjList = new ArrayList<>();
         this.components = new ArrayList<>();
+        this.articulations = new ArrayList<>();
+
         this.initializeNodes();
         this.initializeAdjList();
         this.findComponents();
+        this.findArticulations();
     }
 
     public String findEccentricities() throws MatrixException, IOException {
@@ -76,6 +83,51 @@ public class Graph {
 
         }
 
+    }
+
+    private void findArticulations() {
+        Set<GraphNode> articulations = new HashSet<>();
+
+        ArrayList<GraphNode> fullDfs = new ArrayList<>();
+        ArrayList<GraphNode> dfsIgnoring = new ArrayList<>();
+
+
+        for(GraphNode node : this.nodes){
+
+            if(this.adjList.get(node.getId() - 1).isEmpty()) continue;
+
+            int startNodeId = getStartNodeId(node);
+            int ignoredNodeId = node.getId();
+
+
+            fullDfs = this.dfs(startNodeId);
+            dfsIgnoring = this.dfs(startNodeId, ignoredNodeId);
+
+            if(fullDfs.size() - 1 != dfsIgnoring.size()){
+                articulations.add(node);
+            }
+        }
+
+        this.articulations.addAll(articulations);
+    }
+
+    private int getStartNodeId(GraphNode node){
+        int startNodeId = Integer.MAX_VALUE;
+
+        //wenn es nur 1 Komponent gibt, dann ist der Graph zusammenhängend und es ist egal aus welche Knote die DFS startet
+        if(components.size() == 1) startNodeId = 1;
+
+        for(ArrayList<GraphNode> component : this.components){
+            if(component.contains(node)){
+
+                for(GraphNode connectedNode : component){
+                    if(connectedNode != node) return connectedNode.getId();
+                }
+
+            }
+        }
+
+        return startNodeId;
     }
 
     public ArrayList<GraphNode> dfs(int nodeId) throws GraphException{
@@ -199,6 +251,10 @@ public class Graph {
             GraphNode node = new GraphNode(i+1);
             this.nodes.add(node);
         }
+    }
+
+    public ArrayList<GraphNode> getArticulations(){
+        return this.articulations;
     }
 
     public ArrayList<ArrayList<GraphNode>> getComponents(){
