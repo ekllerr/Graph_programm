@@ -78,30 +78,65 @@ public class Graph {
 
     }
 
-    public ArrayList<GraphNode> dfs(int nodeId){
+    public ArrayList<GraphNode> dfs(int nodeId) throws GraphException{
         if(nodeId > this.nodes.size()) throw new GraphException("Keine Knote mit id " + nodeId);
         Stack<GraphNode> stack = new Stack<>();
         ArrayList<GraphNode> result = new ArrayList<>();
         Set<GraphNode> visited = new HashSet<>();
 
         for(GraphNode node : this.nodes){
-            if(node.getId() == nodeId){
+            if(node.getId() == nodeId)
                 stack.push(node);
-            }
         }
 
         while(!stack.isEmpty() && visited.size() < this.nodes.size()){
             GraphNode node = stack.pop();
+            int currentNodeId = node.getId();
+            ArrayList<Integer> currentNodeConnections = this.adjList.get(currentNodeId - 1);
 
             if(!visited.contains(node)){
                 visited.add(node);
                 result.add(node);
 
-                for(int i = 0; i < this.adjList.get(node.getId()-1).size(); i++){
-                    GraphNode u = this.nodes.get(this.adjList.get(node.getId()-1).get(i) - 1);
+                for(int i = 0; i < currentNodeConnections.size(); i++){
+                    GraphNode u = this.nodes.get(currentNodeConnections.get(i) - 1);
                     stack.push(u);
                 }
             }
+        }
+
+        return result;
+    }
+
+    public ArrayList<GraphNode> dfs(int nodeId, int ignoredNodeId) throws GraphException{
+        if(nodeId > this.nodes.size() || ignoredNodeId > this.nodes.size()) throw new GraphException("Keine Knote mit id " + nodeId);
+        if(nodeId == ignoredNodeId) throw new GraphException("Start Knote darf nicht ignoriert werden");
+
+        Set<GraphNode> visited = new HashSet<>();
+        Stack<GraphNode> stack = new Stack<>();
+        ArrayList<GraphNode> result = new ArrayList<>();
+
+        for(GraphNode node : this.nodes){
+            if(node.getId() == nodeId)
+                stack.push(node);
+        }
+
+        while(!stack.isEmpty() && visited.size() < this.nodes.size()){
+            GraphNode node = stack.pop();
+            int currentNodeId = node.getId();
+            ArrayList<Integer> currentNodeConnections = this.adjList.get(currentNodeId - 1);
+
+            if(!visited.contains(node)){
+                visited.add(node);
+                result.add(node);
+            }
+
+            for(int i = 0; i < currentNodeConnections.size(); i++){
+                GraphNode u = this.nodes.get(currentNodeConnections.get(i) - 1);
+                if(!visited.contains(u) && u.getId() != ignoredNodeId)
+                    stack.push(u);
+            }
+
         }
 
         return result;

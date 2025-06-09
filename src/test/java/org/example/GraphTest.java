@@ -213,6 +213,19 @@ class GraphTest {
     }
 
     @Test
+    void test_dfs(){
+        try{
+
+            Graph graph = new Graph();
+            graph.findEccentricities();
+            System.out.println(graph.dfs(1));
+
+        } catch(GraphException | MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
     void test_dfs_simpleConnected_Graph(){
         try{
 
@@ -340,6 +353,50 @@ class GraphTest {
         }
     }
 
+    @Test
+    void test_dfsWithIgnoredNode_fullyConnectedGraph(){
+        try{
+            Graph graph = new Graph("""
+                    0;1;1
+                    1;0;1
+                    1;1;0
+                    """);
+            System.out.println(graph.dfs(1,2));
+        } catch (MatrixException | GraphException e){
+            System.out.println(e.getMessage());
+        }
+    }
 
+    @Test
+    void test_dfsWithIgnoredNode_starGraph(){
+        try{
+            Graph graph = new Graph("""
+                    0;1;1;1
+                    1;0;0;0
+                    1;0;0;0
+                    1;0;0;0
+                    """);
+            System.out.println(graph.dfs(1,3));
+        } catch (MatrixException | GraphException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_dfsWithIgnoredNode_ignoreBridgeNode(){
+        try{
+            Graph graph = new Graph("""
+                    0;1;0;0;0
+                    1;0;0;0;0
+                    0;0;0;1;1
+                    0;0;1;0;0
+                    0;0;1;0;0
+                    
+                    """);
+            System.out.println(graph.dfs(1,2));
+        } catch (MatrixException | GraphException e){
+            System.out.println(e.getMessage());
+        }
+    }
 
 }
