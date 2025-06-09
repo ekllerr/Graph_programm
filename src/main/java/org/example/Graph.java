@@ -7,21 +7,26 @@ public class Graph {
     private Matrix matrix;
     private ArrayList<GraphNode> nodes;
     private ArrayList<ArrayList<Integer>> adjList;
+    private ArrayList<ArrayList<GraphNode>> components;
 
-    public Graph(){
+    public Graph() {
         this.setMatrix(new Matrix());
         this.nodes = new ArrayList<>();
         this.adjList = new ArrayList<>();
+        this.components = new ArrayList<>();
         this.initializeNodes();
         this.initializeAdjList();
+        this.findComponents();
     }
 
     public Graph(String matrix) throws MatrixException {
         this.setMatrix(new Matrix(matrix));
         this.nodes = new ArrayList<>();
         this.adjList = new ArrayList<>();
+        this.components = new ArrayList<>();
         this.initializeNodes();
         this.initializeAdjList();
+        this.findComponents();
     }
 
     public String findEccentricities() throws MatrixException, IOException {
@@ -55,11 +60,28 @@ public class Graph {
 
         return sb.toString();
     }
+    
+    private void findComponents() {
+        Set<GraphNode> visited = new HashSet<>();
 
-    public Stack<GraphNode> dfs(int nodeId){
+
+        for(GraphNode node : this.nodes){
+            ArrayList<GraphNode> component = new ArrayList<>();
+
+            if (!visited.contains(node)) {
+                component = this.dfs(node.getId());
+                visited.addAll(component);
+                this.components.add(component);
+            }
+
+        }
+
+    }
+
+    public ArrayList<GraphNode> dfs(int nodeId){
         if(nodeId > this.nodes.size()) throw new GraphException("Keine Knote mit id " + nodeId);
         Stack<GraphNode> stack = new Stack<>();
-        Stack<GraphNode> result = new Stack<>();
+        ArrayList<GraphNode> result = new ArrayList<>();
         Set<GraphNode> visited = new HashSet<>();
 
         for(GraphNode node : this.nodes){
@@ -142,6 +164,10 @@ public class Graph {
             GraphNode node = new GraphNode(i+1);
             this.nodes.add(node);
         }
+    }
+
+    public ArrayList<ArrayList<GraphNode>> getComponents(){
+        return this.components;
     }
 
     public ArrayList<ArrayList<Integer>> getAdjList(){

@@ -7,7 +7,7 @@ import java.io.IOException;
 
 class GraphTest {
     @Test
-    void test_initializeNodes(){
+    void test_initializeNodes() {
         Graph graph = new Graph();
         System.out.println(graph.toString());
     }
@@ -271,6 +271,70 @@ class GraphTest {
                     1;0;0;0
                     """);
             System.out.println(graph.dfs(1));
+        } catch(MatrixException | GraphException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_getComponents_starGraph(){
+        try{
+
+            Graph graph = new Graph("""
+                    0;1;1;1
+                    1;0;0;0
+                    1;0;0;0
+                    1;0;0;0
+                    """);
+            System.out.println(graph.getComponents());
+        } catch(MatrixException | GraphException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_getComponents_fullyConnectedGraph(){
+        try{
+            Graph graph = new Graph("""
+                    0;1;1;1;1
+                    1;0;1;1;1
+                    1;1;0;1;1
+                    1;1;1;0;1
+                    1;1;1;1;0
+                    """);
+            System.out.println(graph.getComponents());
+        } catch(MatrixException | GraphException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_getComponents_disconnectedGraph(){
+        try{
+
+            Graph graph = new Graph("""
+                    0;1;0;0;0
+                    1;0;0;0;0
+                    0;0;0;1;1
+                    0;0;1;0;0
+                    0;0;1;0;0
+                    """);
+            System.out.println(graph.getComponents());
+        } catch(MatrixException | GraphException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_getComponents_IsolatedNodes(){
+        try{
+
+            Graph graph = new Graph("""
+                    0;0;0
+                    0;0;0
+                    0;0;0
+                    """);
+            System.out.println(graph.getComponents());
         } catch(MatrixException | GraphException e){
             System.out.println(e.getMessage());
         }
