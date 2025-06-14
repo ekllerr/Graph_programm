@@ -139,4 +139,16 @@ class MatrixTest{
         }
     }
 
+    @Test
+    void test_getDistanceMatrix_default(){
+        try{
+
+        Matrix matrix = new Matrix();
+        System.out.println(matrix.getDistanceMatrix());
+        }
+        catch(MatrixException | IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

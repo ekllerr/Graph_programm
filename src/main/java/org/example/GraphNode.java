@@ -69,8 +69,9 @@ public class GraphNode {
         StringBuilder sb = new StringBuilder();
         sb.append("Knote: ").append(id);
         if(!this.label.isBlank()) sb.append(", ").append(label);
-        if(this.eccentricity == -1) sb.append(", Exzentrizitäten noch nicht berechnet");
-        else sb.append(", Exzentrizitäten: ").append(eccentricity);
+        /*if(this.eccentricity == -1) sb.append(", Exzentrizitäten noch nicht berechnet");
+        else sb.append(", Exzentrizitäten: ").append(eccentricity);*/
+        if(this.eccentricity != -1) sb.append(", Exzentrizitäten: ").append(eccentricity);
         return sb.toString();
     }
 }

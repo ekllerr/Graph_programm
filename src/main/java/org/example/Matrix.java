@@ -66,7 +66,7 @@ public class Matrix {
     public ArrayList<ArrayList<Integer>> getDistanceMatrix() throws IOException, MatrixException {
 
         BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt", true));
-
+        //wenn das Distanz ist unendlich
         int maxValue = Integer.MAX_VALUE;
 
         ArrayList<ArrayList<Integer>> distanceMatrix = new ArrayList<>();
@@ -83,6 +83,7 @@ public class Matrix {
         writer.write(String.valueOf(this.matrix));
         writer.newLine();
 
+        //Matrix kopieren, um das originale Matrix nicht ändern
         for(int i = 0; i < this.matrix.size(); i++){
             ArrayList<Integer> row = new ArrayList<>(this.matrix.get(i));
             adjMatrix.add(row);
@@ -100,18 +101,22 @@ public class Matrix {
         writer.write("-- START OF CREATING THE DISTANCE MATRIX OF THE 1st POWER --");
         writer.newLine();
 
+
         for(int i = 0; i < adjMatrix.size(); i++){
 
             ArrayList<Integer> row = new ArrayList<>();
 
             for(int j = 0; j < adjMatrix.get(i).size(); j++){
-
+                // werte auf Diagonale sind immer 0
                 if(i == j){
                     row.add(0);
                 }
+                // wenn es keine Kante zwischen Knoten gibt, dann das Distanz is unendlich
                 else if(adjMatrix.get(i).get(j) == 0){
                     row.add(maxValue);
-                }else{
+                }
+                // in anderen Fällen Knote i und Knote j sind verbinden, deshalb schreiben wir 1
+                else{
                     row.add(1);
                 }
 
@@ -136,8 +141,11 @@ public class Matrix {
         writer.write("-- START OF POWERING THE DISTANCE MATRIX --");
         writer.newLine();
 
+        // wir starten von k = 2, weil das distanz Matrix schon in Potenz 1 ist
         for(int k = 2; k < adjMatrix.size(); k++){
+            // hasChanged überprüft, ob die matrix geändert hat, um das Algorithmus zu optimieren
             boolean hasChanged = false;
+            //Adjazenz Matrix zu Potenz k
             poweredMatrix = Matrix.matrixToPower(adjMatrix,k);
 
             writer.write(String.format("k = %d, powered Matrix: ", k));
@@ -149,18 +157,19 @@ public class Matrix {
             writer.write(String.valueOf(adjMatrix));
             writer.newLine();
 
+            //
             for(int i = 0; i < adjMatrix.size(); i++){
 
                 for(int j = 0; j < adjMatrix.get(i).size(); j++){
-
+                    // wenn in Distanzmatrix noch kein wert in diese Stelle ist, und in Potenzmatrix gibt ein Wert größer als 0, heisst das, dass es ein weg zwischen diesen Knoten gibt(und es ist das kürzeste Weg)
                     if(distanceMatrix.get(i).get(j) == maxValue && poweredMatrix.get(i).get(j) > 0){
-
+                        //wir setzen k statt Infinity, und geben an, dass Matrix geändert hat
                         distanceMatrix.get(i).set(j, k);
                         hasChanged = true;
                     }
                 }
             }
-
+            // wenn Matrix hat sich nicht verändert, heisst das, dass alle Distanzen schon gefunden
             if(!hasChanged) break;
         }
 
@@ -187,36 +196,41 @@ public class Matrix {
 
         if(matrix == null || matrix.isEmpty()) throw new MatrixException("Keine Matrix übergeben");
 
+        //Überprüfung, ob die Matrix quadratisch ist
         for(int i = 0; i < matrix.size(); i++){
             if(matrix.size() != matrix.get(i).size())throw new MatrixException("Die Matrix muss quadratisch sein");
         }
 
         if(k < 0) throw new MatrixException("Die Potenz darf nicht negativ sein");
 
+        //wenn k = 0, dann ist die Matrix mit Einser ausgefüllt
         if(k==0){
             for(int i = 0; i < matrix.size(); i++){
                 ArrayList<Integer> row = new ArrayList<>();
                 for(int j = 0; j < matrix.get(i).size(); j++){
                     if(i == j){
-                        row.add(1);
+                        row.add(0);
                         continue;
                     }
-                    row.add(0);
+                    row.add(1);
                 }
                 result.add(row);
             }
             return result;
         }
 
+        //wir kopieren die Matrix, um es weiter zu multiplizieren
         for(int i = 0; i < matrix.size(); i++){
             ArrayList<Integer> row = new ArrayList<>(matrix.get(i));
             result.add(row);
         }
 
+        //wenn k = 1, dann liefern wir die Matrix zurück
         if(k==1){
             return result;
         }
 
+        //wir multiplizieren die übergebene Matrix mit sich selbst k mal
         for(int i = 1; i < k; i++){
             result = Matrix.multiplyMatrices(matrix, result);
         }
@@ -244,9 +258,12 @@ public class Matrix {
         
         for(int i = 0; i < matrix1.size(); i++){
             ArrayList<Integer> row = new ArrayList<>();
+            //Schleife für Werte(aus Spalte) aus 1. Matrix
             for(int j = 0; j < matrix1.get(i).size(); j++){
                 int sum = 0;
+                //Schleife für Werte(aus Spalte) aus 2. Matrix
                 for(int k = 0; k < matrix2.get(i).size(); k++){
+                    //wir multiplizieren jeden Wert aus der Spalte und schreiben das Ergebnis in sum
                     sum += matrix1.get(i).get(k)*matrix2.get(k).get(j);
                 }
                 row.add(sum);

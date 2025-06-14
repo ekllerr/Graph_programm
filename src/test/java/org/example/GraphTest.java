@@ -9,7 +9,7 @@ class GraphTest {
     @Test
     void test_initializeNodes() {
         Graph graph = new Graph();
-        System.out.println(graph.toString());
+        System.out.println(graph);
     }
 
     @Test
@@ -26,7 +26,7 @@ class GraphTest {
             String result = graph.findEccentricities();
 
             System.out.println(result);
-            System.out.println(graph.toString());
+            System.out.println(graph);
 
         } catch(MatrixException | IOException e){
             System.out.println(e.getMessage());
@@ -47,7 +47,7 @@ class GraphTest {
             String result = graph.findEccentricities();
 
             System.out.println(result);
-            System.out.println(graph.toString());
+            System.out.println(graph);
 
         } catch(MatrixException | IOException e){
             System.out.println(e.getMessage());
@@ -466,5 +466,72 @@ class GraphTest {
             System.out.println();
         }
     }
+
+    @Test
+    void test_findBridges_default(){
+
+        Graph graph = new Graph();
+        System.out.println(graph.getBridges());
+    }
+
+    @Test
+    void test_findBridges_triangleGraph(){
+        try{
+            Graph graph = new Graph("""
+                    0;1;1
+                    1;0;1
+                    1;1;0
+                    """);
+            System.out.println(graph.getBridges());
+        } catch(MatrixException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_findBridges_lineGraph(){
+        try{
+            Graph graph = new Graph("""
+                    0;1;0;0
+                    1;0;1;0
+                    0;1;0;1
+                    0;0;1;0
+                    """);
+            System.out.println(graph.getBridges());
+        } catch(MatrixException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_findBridges_starGraph(){
+        try{
+            Graph graph = new Graph("""
+                    0;1;1;1
+                    1;0;0;0
+                    1;0;0;0
+                    1;0;0;0
+                    """);
+            System.out.println(graph.getBridges());
+        } catch(MatrixException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void test_findBridges_disconnectedGraph(){
+        try{
+            Graph graph = new Graph("""
+                    0;0;0;0
+                    0;0;1;0
+                    0;1;0;0;
+                    0;0;0;0
+                    """);
+            System.out.println(graph.getBridges());
+        } catch(MatrixException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }
